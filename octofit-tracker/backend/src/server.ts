@@ -9,11 +9,23 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-
 app.use(cors());
 app.use(express.json());
 app.use(healthRoutes);
 app.use(resourceRoutes);
+
+// Compute Codespaces-aware API base URL and expose it on the app
+const codespaceName = process.env.CODESPACE_NAME;
+const API_BASE_URL = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev`
+  : `http://localhost:${PORT}`;
+
+app.locals.API_BASE_URL = API_BASE_URL;
+app.get('/api/config', (_req, res) => {
+  res.json({ apiBaseUrl: API_BASE_URL });
+});
+
+app.use(cors());
 
 async function start() {
   try {

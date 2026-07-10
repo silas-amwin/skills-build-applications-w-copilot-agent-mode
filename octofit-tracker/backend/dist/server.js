@@ -16,6 +16,16 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(health_1.default);
 app.use(resourceRoutes_1.default);
+// Compute Codespaces-aware API base URL and expose it on the app
+const codespaceName = process.env.CODESPACE_NAME;
+const API_BASE_URL = codespaceName
+    ? `https://${codespaceName}-8000.app.github.dev`
+    : `http://localhost:${PORT}`;
+app.locals.API_BASE_URL = API_BASE_URL;
+app.get('/api/config', (_req, res) => {
+    res.json({ apiBaseUrl: API_BASE_URL });
+});
+app.use((0, cors_1.default)());
 async function start() {
     try {
         await (0, database_1.connectToDatabase)();
