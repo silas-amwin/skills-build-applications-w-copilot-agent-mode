@@ -3,16 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.connectToDatabase = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
 const db = mongoose_1.default.connection;
-mongoose_1.default
-    .connect(connectionString, { serverSelectionTimeoutMS: 2000 })
-    .then(() => {
-    console.log('Connected to octofit_db');
-})
-    .catch((error) => {
-    console.error('MongoDB connection unavailable:', error.message);
-});
+async function connectToDatabase() {
+    return mongoose_1.default.connect(connectionString, { serverSelectionTimeoutMS: 5000 })
+        .then(() => {
+        console.log('Connected to octofit_db');
+        return mongoose_1.default.connection;
+    })
+        .catch((error) => {
+        console.error('MongoDB connection unavailable:', error.message);
+        throw error;
+    });
+}
+exports.connectToDatabase = connectToDatabase;
 db.on('error', console.error.bind(console, 'connection error:'));
 exports.default = db;

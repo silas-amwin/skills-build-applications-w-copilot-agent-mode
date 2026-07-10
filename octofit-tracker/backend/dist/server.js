@@ -6,15 +6,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const health_1 = __importDefault(require("./routes/health"));
+const resourceRoutes_1 = __importDefault(require("./routes/resourceRoutes"));
+const database_1 = require("./config/database");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 8000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', message: 'OctoFit Tracker API is running' });
-});
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
-});
+app.use(health_1.default);
+app.use(resourceRoutes_1.default);
+async function start() {
+    try {
+        await (0, database_1.connectToDatabase)();
+    }
+    catch (err) {
+        console.error('Database connection failed. Server will still start but DB queries may fail.');
+    }
+    app.listen(PORT, () => {
+        console.log(`Server listening on port ${PORT}`);
+    });
+}
+start();
 exports.default = app;
