@@ -1,4 +1,5 @@
 import './App.css'
+import { API_BASE_URL } from './apiConfig'
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
                 team challenges, and leaderboards.
               </p>
               <div className="d-flex gap-3">
-                <a className="btn btn-primary" href="http://localhost:8000/api/health">
+                <a className="btn btn-primary" href={`${API_BASE_URL}/api/health`} target="_blank" rel="noreferrer">
                   Check API Health
                 </a>
                 <a className="btn btn-outline-secondary" href="https://vite.dev/" target="_blank" rel="noreferrer">
