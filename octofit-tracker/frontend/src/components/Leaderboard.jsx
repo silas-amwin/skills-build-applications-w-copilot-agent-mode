@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchList, fetchUrl } from '../apiConfig'
 
+const ENDPOINT = 'leaderboard'
+
 export default function Leaderboard() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -9,7 +11,7 @@ export default function Leaderboard() {
 
   useEffect(() => {
     let mounted = true
-    fetchList('leaderboard').then(({ items, pagination }) => {
+    fetchList(ENDPOINT).then(({ items, pagination }) => {
       if (!mounted) return
       setItems(items)
       setPagination(pagination)

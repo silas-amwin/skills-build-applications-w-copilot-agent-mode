@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchList, fetchUrl } from '../apiConfig'
 
+const ENDPOINT = 'activities'
+
 export default function Activities() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -11,7 +13,7 @@ export default function Activities() {
     setLoading(true)
     setError(null)
     try {
-      const { items, pagination } = await fetchList('activities')
+    const { items, pagination } = await fetchList(ENDPOINT)
       setItems(items)
       setPagination(pagination)
     } catch (e) {
