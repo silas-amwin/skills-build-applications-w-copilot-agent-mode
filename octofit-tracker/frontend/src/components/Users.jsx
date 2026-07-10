@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchList, fetchUrl } from '../apiConfig'
 
-const ENDPOINT = 'users'
+const ENDPOINT = '/api/users'
 
 export default function Users() {
   const [items, setItems] = useState([])

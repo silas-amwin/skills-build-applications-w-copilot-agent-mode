@@ -14,7 +14,25 @@ export const API_BASE_URL = getApiBase();
 
 export async function fetchList(resource, options = {}) {
 	const base = getApiBase();
-	const url = `${base}/${resource}/`;
+	let url;
+
+	if (/^https?:\/\//.test(resource)) {
+		url = resource;
+	} else if (resource.startsWith('/api')) {
+		// If our base is an absolute URL that contains /api, make an absolute URL
+		if (base.startsWith('http')) {
+			url = base.replace(/\/api$/, '') + resource;
+		} else {
+			// relative path ok
+			url = resource;
+		}
+	} else {
+		// resource is a short name like 'activities'
+		url = `${base.replace(/\/$/, '')}/${resource}/`;
+	}
+
+	if (!url.endsWith('/')) url = url + '/';
+
 	const res = await fetch(url, options);
 	if (!res.ok) throw new Error(`Fetch failed: ${res.status} ${res.statusText}`);
 	const json = await res.json();

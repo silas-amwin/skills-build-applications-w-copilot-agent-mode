@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchList, fetchUrl } from '../apiConfig'
 
-const ENDPOINT = 'leaderboard'
+const ENDPOINT = '/api/leaderboard'
 
 export default function Leaderboard() {
   const [items, setItems] = useState([])
