@@ -4,13 +4,12 @@ const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/o
 const db = mongoose.connection;
 
 mongoose
-  .connect(connectionString)
+  .connect(connectionString, { serverSelectionTimeoutMS: 2000 })
   .then(() => {
     console.log('Connected to octofit_db');
   })
   .catch((error) => {
-    console.error('Error connecting to octofit_db:', error);
-    process.exit(1);
+    console.error('MongoDB connection unavailable:', error.message);
   });
 
 db.on('error', console.error.bind(console, 'connection error:'));
